@@ -1,4 +1,3 @@
-import { styles } from './styles';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -7,7 +6,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 
-export const Card = ({ width, height }) => {
+export const Card = ({ width, height, radius }) => {
   const isPressed = useSharedValue(false);
   const offset = useSharedValue({ x: 0, y: 0 });
 
@@ -18,7 +17,6 @@ export const Card = ({ width, height }) => {
         { translateY: offset.value.y },
         { scale: withSpring(isPressed.value ? 1.2 : 1 )}
       ],
-      backgroundColor: isPressed.value ? 'red' : '#5C2A86'
     }
   });
 
@@ -37,13 +35,17 @@ export const Card = ({ width, height }) => {
     .onFinalize(() => {
       'worklet';
       isPressed.value = false;
+      if (offset.value.x < 160) {
+        offset.value.x = 20; 
+      }
     });
-
-  // TODO - need to see if I can make 2x cards touch!
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[{ ...styles.ball, width, height }, animatedStyles]} />
+      <Animated.Image 
+        source={require("../assets/card_back.png")}
+        style={[{ width, height, zIndex: 10, borderRadius: radius }, animatedStyles]} 
+      />
     </GestureDetector>
   )
 };
