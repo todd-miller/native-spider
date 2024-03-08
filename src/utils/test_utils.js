@@ -1,12 +1,14 @@
 import { createActor } from "xstate";
 
-
-export const assert = (transition, expected, index) => {
+/**
+ * Runs an array of assertions against each transition 
+ */
+export const assert = (transition, assertions, index) => {
   if (transition.type === "@xstate.snapshot") {
    try {
       const { snapshot, event } = transition;
       const { value, context } = snapshot;
-      expected[index]({ context, event, value });
+      assertions[index]({ context, event, value });
     } catch (e) {
       throw new Error(`Failure: blew up on transition ${index} from ${e}`);
     }
