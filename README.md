@@ -2,11 +2,28 @@
 spider solitaire using React Native
 
 ## Commands:
-`npx expo start` - start up metro server
-`npx expo install <npm-package>` - runs package installs through `expo` to see
-if it has any opinions on how to install the package
+### Start Metro Server
+
+```
+    npx expo start
+```
+
+### Install via Expo
+Allows Expo to do an opinionated install of an npm package
+```
+    npx expo install <npm-package>
+```
+
+
+### Bundle Visualizer:
+Should limit of 500MB, should shoot for below 80MB 
+[Apple Bundle Limits](https://developer.apple.com/help/app-store-connect/reference/maximum-build-file-sizes/)
+```
+npx react-native-bundle-visualizer
+```
 
 ## TODO 
 
-- [ ] xstate - need to set up a machine
+- [ ] cypress install for testing
+- [ ] switch to typescript.
 - [ ] lanes/piles - need to figure out how to lay these out

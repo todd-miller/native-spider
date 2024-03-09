@@ -17,6 +17,10 @@ export const assert = (transition, assertions, index) => {
   return index;
 }
 
+
+/**
+ *
+ */
 export const testActor = (machine, behavior) => {
   let count = 0;
   return createActor(machine, {
