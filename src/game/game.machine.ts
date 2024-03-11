@@ -1,45 +1,77 @@
 import { createActorContext } from "@xstate/react";
 import { assign, createMachine } from "xstate";
+import { deal, Stack, Card } from "../utils/dealer";
 
-const CARD_TO_BOARD_RATIO = 0.085;
-export const DECK_SIZES = [6, 6, 6, 6, 5, 5, 5, 5, 5, 5]
+const CARD_TO_BOARD_RATIO = 0.07;
+const CARD_CORNER_RAIDUS = 1;
+const STACK_WIDTH_RATIO = 1.2;
+const NUM_STACKS = 10;
+const TOP_PADDING_PERCENT = 0.05;
 
 const assigns = {
-  newGameContext: assign({
-    dimensions: (c) => {
-      const { width, height } = c.event.payload;
+  setDimensions: assign({
+    dimensions: ({ event, context }) => {
+      const { width, height } = event.payload;
       const card = {
         width: width * CARD_TO_BOARD_RATIO,
-        height: width * 4/3 * CARD_TO_BOARD_RATIO
+        height: width * 1.5 * CARD_TO_BOARD_RATIO,
+        radius: CARD_CORNER_RAIDUS
+      };
+      const stack = {
+        width: card.width * STACK_WIDTH_RATIO,
+        height: card.height
+      }
+      const padding = {
+        left: (width - (stack.width * NUM_STACKS)) / 2,
+        top: width * TOP_PADDING_PERCENT 
       };
       return { 
+        ...context.dimensions,
         screen: { width,  height },
         card,
-        piles: {
-          width: 10,
-          height: card.height
-        }
-      };
-    },
+        stack,
+        padding
+      }
+    }
+  }),
+  newGame: assign({
+    game: ({ context }) => {
+      const { padding, stack } = context.dimensions;
+      const { stacks, remaining } = deal(padding, stack);
+      return { stacks, remaining };
+    }
   })
 }
 
 const actions = {
-  log: ({ context }) => console.log("actions.log(c) -> ", context),
+  logVisible: ({ context }) => {
+    const { stacks } = context.game;
+
+    
+    stacks.forEach((stack:Stack) => {
+      const cards = stack.visible.map((card: Card) => `${card.label}_of_${card.suit}`);
+      console.log(`stack: ${cards}`);
+    })
+  }
 }
 
 const DEFAULT_CONTEXT = {
+  game: {
+    stacks: [] as Stack[],
+    remaining: [] as Card[]
+  },
   dimensions: {
-    padding: 10,
+    padding: { left: 55, top: 25 },
     screen: {
       width: 100,
       height: 100 
     },
     card: {
       width: 60,
-      height: 80
+      height: 80,
+      radius: CARD_CORNER_RAIDUS
     },
-    piles: {
+    stack: {
       width: 60,
       height: 80
     }
@@ -53,7 +85,7 @@ export const gameMachine = () => createMachine({
     INIT: {
       on: {
         START_GAME: [
-          { target: "PLAYING", actions: [assigns.newGameContext, actions.log] }
+          { target: "PLAYING", actions: [assigns.setDimensions, assigns.newGame, actions.logVisible] }
         ],
       }
     }, 

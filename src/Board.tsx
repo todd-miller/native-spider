@@ -1,15 +1,13 @@
 import { View, LayoutChangeEvent } from 'react-native';
 import { styles } from "./styles";
-import { Card } from './Card';
-import { Lane } from './Lane';
-import { GameContext, DECK_SIZES } from './game/game.machine';
+import { Stack } from './Stack';
+import { GameContext } from './game/game.machine';
 import { useSelector } from '@xstate/react';
-
 
 
 export const Board = () => {
   const gameRef = GameContext.useActorRef();
-  const { padding, card, piles }= useSelector(gameRef, (snapshot) =>  snapshot.context.dimensions);
+  const { game } = useSelector(gameRef, (state) => state.context);
   
   const startGame = (e: LayoutChangeEvent) => gameRef.send({
     type: "START_GAME",
@@ -19,16 +17,12 @@ export const Board = () => {
 
   return (
     <View onLayout={startGame} style={styles.container}>
+
         { 
-          DECK_SIZES.map((deckSize, pileIndex) => (
-            <Lane 
-              key={pileIndex} 
-              deckSize={deckSize} 
-              x={padding + (pileIndex * piles.width)} 
-            />
-          ))
+          game.stacks.map((_, index) => {
+              return <Stack key={index} index={index} />
+          })
         }
-        <Card width={card.width} height={card.height} radius={10} />
     </View>
   )
 }
