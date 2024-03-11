@@ -25,5 +25,5 @@ npx react-native-bundle-visualizer
 ## TODO 
 
 - [ ] cypress install for testing
-- [ ] switch to typescript.
-- [ ] lanes/piles - need to figure out how to lay these out
+- [ ] remove Stack view component, only cards should be view objects
+
