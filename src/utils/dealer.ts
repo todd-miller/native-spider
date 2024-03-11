@@ -1,5 +1,3 @@
-import fs from "react-native-fs";
-
 export const LABELS = [
   'ace',
   '2',
@@ -29,7 +27,6 @@ export interface Card {
   label: string;
   suit: string;
   hidden: boolean;
-  img: string;
   x: number;
   y: number;
 }
@@ -41,18 +38,12 @@ export interface Stack {
 }
 
 const createDeck = () => {
-  const image = require("../../assets/png_cards/2_of_clubs.png");
-  console.log("image: ", image, typeof image);
-
   const cards:Card[]  = [];
   LABELS.forEach((label) => {
     SUITS.forEach((suit) => {
-      console.log(`${label}_of_${suit}.png`)
-      const image = require(`../../assets/png_cards/5_of_clubs.png`);
       cards.push({
         label,
         suit,
-        img: image,
         hidden: true,
         x: 0,
         y: 0

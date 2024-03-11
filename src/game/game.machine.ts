@@ -2,7 +2,7 @@ import { createActorContext } from "@xstate/react";
 import { assign, createMachine } from "xstate";
 import { deal, Stack, Card } from "../utils/dealer";
 
-const CARD_TO_BOARD_RATIO = 0.07;
+const CARD_TO_BOARD_RATIO = 0.075;
 const CARD_CORNER_RAIDUS = 1;
 const STACK_WIDTH_RATIO = 1.2;
 const NUM_STACKS = 10;
@@ -14,7 +14,7 @@ const assigns = {
       const { width, height } = event.payload;
       const card = {
         width: width * CARD_TO_BOARD_RATIO,
-        height: width * 1.5 * CARD_TO_BOARD_RATIO,
+        height: width * 1.452 * CARD_TO_BOARD_RATIO,
         radius: CARD_CORNER_RAIDUS
       };
       const stack = {
@@ -41,18 +41,6 @@ const assigns = {
       return { stacks, remaining };
     }
   })
-}
-
-const actions = {
-  logVisible: ({ context }) => {
-    const { stacks } = context.game;
-
-    
-    stacks.forEach((stack:Stack) => {
-      const cards = stack.visible.map((card: Card) => `${card.label}_of_${card.suit}`);
-      console.log(`stack: ${cards}`);
-    })
-  }
 }
 
 const DEFAULT_CONTEXT = {
@@ -85,7 +73,7 @@ export const gameMachine = () => createMachine({
     INIT: {
       on: {
         START_GAME: [
-          { target: "PLAYING", actions: [assigns.setDimensions, assigns.newGame, actions.logVisible] }
+          { target: "PLAYING", actions: [assigns.setDimensions, assigns.newGame] }
         ],
       }
     }, 

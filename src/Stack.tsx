@@ -12,18 +12,11 @@ interface Card {
   suit: string;
 }
 
-/*
- * I'm not sure Stack should be anthing but two mappings, I think cards should
- * carry all their information
- */
+// TODO: I'm not sure Stack should exist as a view item
 export const Stack = ({ index }) => {
   const gameRef = GameContext.useActorRef();
-  const { hidden, visible, padding, width } = useSelector(gameRef,
-    (snapshot) => {
-      const { hidden, visible } = snapshot.context.game.stacks[index]
-      const { padding, stack } = snapshot.context.dimensions; 
-      return { hidden, visible, padding, ...stack };
-    }
+  const { hidden, visible } = useSelector(gameRef,
+    (snapshot) => snapshot.context.game.stacks[index]
   );
 
   return (
