@@ -46,13 +46,14 @@ export const Card = ({ card, hidden = false }) => {
     })
     .onFinalize(() => {
       'worklet';
+      isPressed.value = false;
     });
 
   return (
     <GestureDetector gesture={gesture}>
       <Animated.Image 
         source={image}
-        style={[{ width, height, zIndex: 10, borderRadius: radius }, animatedStyles]}
+        style={[{ width, height, zIndex: 10, borderRadius: radius }, animatedStyles]} 
       />
     </GestureDetector>
   )

@@ -19,7 +19,7 @@ export const Board = () => {
     <View onLayout={startGame} style={styles.container}>
         { 
           game.stacks.map((_, index) => {
-              return <Stack key={index} index={index} />
+            return <Stack key={index} index={index} /> 
           })
         }
     </View>

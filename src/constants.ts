@@ -1,4 +1,4 @@
-export const CARD_BACK = require(`../assets/card_back.png`);
+export const CARD_BACK = require(`../assets/card_back2.png`);
 export const CARD_IMAGES = {
   ace_of_spades: require("../assets/png_cards/ace_of_spades.png"),
   "2_of_spades": require("../assets/png_cards/2_of_spades.png"),
